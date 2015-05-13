@@ -1,5 +1,9 @@
 #bin/bash
 
+#First argument is the path of pnfs file
+#Manualy run the script like this : ./space_count.sh StorageInfoProvider/pnfs-dump-2015-03-31-10-43.xml
+#This script is run weekly by cron
+
 #Set Enviromental Variables
 
 export sw=/home/sgmcms/phedex/sw
@@ -59,13 +63,15 @@ prox=$(myproxy-info -d)
 t1="${prox##*(}"
 proxy_left="${t1%.*}"
 
+#Send email before 6days that proxy expires
 if [ $proxy_left -lt 6 ]; then
 	proxy_warn="Long term proxy in myproxy server will expire in $proxy_left days. Please renew it."
 	echo $proxy_warn | mail -s "[Proxy Alert : $host]" engin.eren@desy.de,christoph.wissing@desy.de 
 fi
 
-
+#count/validate space and upload Site Status Board
 spacecount dcache --dump $1 --node T2_DE_DESY > space_output.log
+
 update=$(tail -5 space_output.log)
 header="************************CRON-BEGIN*****************************\n"
 info="Command: spacecount dcache --dump $1 --node T2_DE_DESY\n"
