@@ -1,5 +1,5 @@
 #!/bin/bash
-#
+# Original location of the script : t2-cms-phedex02:/home/sgmcms/ChimeraDump
 # Wrapper script to call Chimera-Dump tool
 #
 #
