@@ -1,13 +1,16 @@
 #!/bin/bash
 
-list=$(grep tier2/store/user $1 | awk -F'"' '{print $2}')
+cat $1 | awk -F/ '{print $8}' > user
+cat $1 | awk -F'"' '{print $2}' > filename
 
-rm user.files.txt
+paste user filename | awk '{print $1,$2}' > user.files.txt
 
-for i in $list; do
-  username=$(echo $i | awk -F/ '{print $8}') 
-  echo $username $i >> user.files.txt
-done
+rm user
+rm filename
+
+exit 0;
 
 
-exit 0; 
+
+
+
