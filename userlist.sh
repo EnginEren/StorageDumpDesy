@@ -1,20 +1,13 @@
 #!/bin/bash
 
-list=$(grep "/user/" $1)
-touch bad.txt
+list=$(grep tier2/store/user $1 | awk -F'"' '{print $2}')
+
 rm user.files.txt
-for user in $list; do
-  echo $user > tmp.txt
-  s1=${user%'"'>*} 
-  s1=${s1##*/user/}
-  username=${s1%%/*}  
-  filename=$(awk -F'"' '{print $2}' tmp.txt) 
-  #filename=${s1#*/}
-  echo $username $filename >> bad.txt
-  rm tmp.txt
+
+for i in $list; do
+  username=$(echo $i | awk -F/ '{print $8}') 
+  echo $username $i >> user.files.txt
 done
 
-awk '!/entry/' bad.txt > temp && mv temp user.files.txt
 
-rm bad.txt
 exit 0; 
