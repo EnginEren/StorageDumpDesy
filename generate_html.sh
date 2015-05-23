@@ -3,34 +3,47 @@
 IFS=$'\n'
 set -f
 
-comm -3 $1 $2 | awk '{print $1,$2}' > trash
+#comm -3 $1 $2 | awk '{print $1,$2}' > trash
+
+cat new | awk '{print $1}' | sort -u > onlyname
+
 
 cat << _EOF_
 <!DOCTYPE html>
 <html>
 <body>
-<table border="1" cellpadding="5" cellspacing="5">
- <caption>Users who did not access files in tier2/store/user directory over six months </caption>
+<h2>Users who did not access files in tier2/store/user directory over six months </h2>
 _EOF_
 
 
-for i in $(cat trash); do
-	username=$(echo $i | awk '{print $1}')
-	filename=$(echo $i | awk '{print $2}')
-	 
+for i in $(cat onlyname); do
+	cat << _EOF_
+<ul>
+  <li> $i 
+_EOF_
+	user="$i"
+	for j in $(cat new); do
+		username=$(echo $j | awk '{print $1}')
+		filename=$(echo $j | awk '{print $2}')
+		if [ "$username" == "$user" ]; then
+		cat << _EOF_
+    <ul>
+    <li> $filename </li>
+    </ul>
+  </li>
+_EOF_
+		fi 	
+	done		
+
 cat << _EOF_
-<tr>
-   <td>$username</td>
-   <td>$filename</td>
-</tr>
+</ul>
 _EOF_
+
 done
 
 cat << _EOF_
-</table>
 </body>
 </html>
 _EOF_
-
 
 exit 0;
