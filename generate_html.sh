@@ -34,30 +34,3 @@ _EOF_
 
 
 exit 0;
-
-
-
-
-
-
- 
-#        cat << _EOF_
-#	<!DOCTYPE html>
-#	<html>
-#	<body>
-
-#	<table border="1" style="width:100%">
- # 	<tr>
- #          <td>$username</td>
- #   	   <td>$file</td>
-  #	</tr>
-  #	</table>
-
-#	</body>
-#	</html>
-
-#_EOF_
-
-#done
-
-#exit 0; 
