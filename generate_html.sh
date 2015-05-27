@@ -7,43 +7,42 @@ set -f
 
 cat new | awk '{print $1}' | sort -u > onlyname
 
+touch users.html
 
-cat << _EOF_
-<!DOCTYPE html>
+echo "<!DOCTYPE html>
 <html>
 <body>
-<h2>Users who did not access files in tier2/store/user directory over six months </h2>
-_EOF_
-
+<h2> Users who did not access/touch files in tier2/store/user directory over six months </h2>" > users.html
 
 for i in $(cat onlyname); do
-	cat << _EOF_
-<ul>
-  <li> $i 
-_EOF_
+	touch user_$i.html
+	echo "<!DOCTYPE html>
+<html>
+<body>
+<h2>You did not access these files in tier2/store/user directory over six months </h2> " > user_$i.html
 	user="$i"
+	echo "<ul>
+		<li> <p><a href="https://eeren.web.cern.ch/eeren/user_$i.html"> $i</a></p> </li> 
+	      </ul>" >> users.html
 	for j in $(cat new); do
 		username=$(echo $j | awk '{print $1}')
 		filename=$(echo $j | awk '{print $2}')
 		if [ "$username" == "$user" ]; then
-		cat << _EOF_
-    <ul>
-    <li> $filename </li>
-    </ul>
-  </li>
-_EOF_
+		echo "<ul>
+    			<li> $filename </li>
+    	
+		     </ul>" >> user_$i.html
 		fi 	
 	done		
+echo "</body>
+</html>" >> user_$i.html
 
-cat << _EOF_
-</ul>
-_EOF_
 
 done
 
-cat << _EOF_
-</body>
-</html>
-_EOF_
+echo "</body>
+</html>" >> users.html
+
+
 
 exit 0;
