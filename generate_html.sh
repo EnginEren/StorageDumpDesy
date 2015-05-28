@@ -11,14 +11,21 @@ touch users.html
 
 echo "<!DOCTYPE html>
 <html>
+<head>
+<BODY BACKGROUND="speckle.gif"> 
+<title>
+Users@T2_DESY
+</title>
+</head>
 <body>
-<h2> Users who did not access/touch files in tier2/store/user directory over six months </h2>" > users.html
-
+<h2> Users who did not access/touch files in tier2/store/user directory over six months </h2>
+<img src="user-group-icon.png" alt="People" style="width:256px"> " > users.html
 for i in $(cat onlyname); do
 	touch user_$i.html
 	echo "<!DOCTYPE html>
 <html>
 <body>
+<BODY BACKGROUND="speckle.gif">
 <h2>You did not access these files in tier2/store/user directory over six months </h2> " > user_$i.html
 	user="$i"
 	echo "<ul>
@@ -30,8 +37,7 @@ for i in $(cat onlyname); do
 		if [ "$username" == "$user" ]; then
 		echo "<ul>
     			<li> $filename </li>
-    	
-		     </ul>" >> user_$i.html
+    		      </ul>" >> user_$i.html
 		fi 	
 	done		
 echo "</body>
